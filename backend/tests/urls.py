@@ -1,6 +1,15 @@
 import json
 from bottle import run, route, response
-from utils import get_test_data
+import os
+
+print(os.getcwd())
+
+import sys
+print(sys.path)
+# sys.path.append("/Users/liguang/WrokSpace/66_personal_projects/SS_Rabbit")
+
+from backend.utils import get_test_data
+# from utils import get_test_data
 
 @route('/', methods=['GET', 'POST'])
 def my_test1():
@@ -17,4 +26,5 @@ def my_test2():
     response.headers['Content-Type'] = 'application/json'
     return json.dumps(rv)
 
-run(host="127.0.0.1", port=8888, reloader=True)
+if __name__ == "__main__":
+    run(host="127.0.0.1", port=8888, reloader=True)
