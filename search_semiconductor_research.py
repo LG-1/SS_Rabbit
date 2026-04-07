@@ -62,11 +62,18 @@ payload = json.dumps({
     ]
 })
 
+auth_token = os.environ.get('ES_AUTH_TOKEN')
+if not auth_token:
+    raise SystemExit("Error: ES_AUTH_TOKEN environment variable is not set.")
+
 headers = {
     'Content-Type': 'application/json',
-    'Authorization': 'Basic ' + os.environ.get('ES_AUTH_TOKEN', '')
+    'Authorization': 'Basic ' + auth_token
 }
 
-response = requests.request("POST", url, headers=headers, data=payload)
-
-print(response.text)
+try:
+    response = requests.request("POST", url, headers=headers, data=payload)
+    response.raise_for_status()
+    print(response.text)
+except requests.exceptions.RequestException as e:
+    raise SystemExit(f"Request failed: {e}")
